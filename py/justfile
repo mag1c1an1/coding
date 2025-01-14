@@ -1,0 +1,5 @@
+r:
+  python3 main.py < input
+
+s:
+  python3 script.py < txt

@@ -1,0 +1,41 @@
+def tarjan(n, adj):
+    dfn = [0] * n  # 访问节点时的时间戳
+    low = [0] * n  # 节点可达的最低时间戳
+    in_stack = [False] * n  # 布尔数组，用于检查节点是否在栈中
+    stack = []  # 用于存储节点的栈
+    dfncnt = 1  # 用于给访问的节点分配唯一编号的计数器
+    scc = [0] * n  # 存储每个节点所属的强连通分量(SCC)编号的数组
+    sc = 0  # 找到的SCC数量的计数器
+    sz = [0] * n  # 每个SCC的大小
+
+    def dfs(u):
+        nonlocal dfncnt, sc
+        dfn[u] = low[u] = dfncnt  # 给节点分配时间戳
+        dfncnt += 1
+        stack.append(u)  # 将当前节点加入栈
+        in_stack[u] = True  # 标记节点为在栈中
+
+        for v in adj[u]:  # 遍历每个相邻节点
+            if dfn[v] == 0:  # 如果节点未被访问
+                dfs(v)
+                low[u] = min(low[u], low[v])  # 更新当前节点的最低可达时间戳
+            elif in_stack[v]:  # 如果相邻节点在栈中
+                low[u] = min(low[u], dfn[v])  # 更新当前节点的最低可达时间戳，仅包括在栈中的节点
+
+        # 如果当前节点是SCC的根节点
+        if dfn[u] == low[u]:
+            sc += 1
+            while True:
+                v = stack.pop()  # 弹出节点
+                in_stack[v] = False  # 标记节点不在栈中
+                scc[v] = sc  # 分配SCC编号
+                sz[sc - 1] += 1  # 增加SCC大小
+                if v == u:  # 如果回到根节点，结束循环
+                    break
+
+    # 从每个未访问的节点运行DFS
+    for i in range(n):
+        if dfn[i] == 0:
+            dfs(i)
+
+    return scc, sz  # 返回SCC编号和每个SCC的大小
