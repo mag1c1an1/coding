@@ -1,6 +1,6 @@
 # 输入获取
-n = int(input())
-infos = [input().split() for _ in range(n)]
+# n = int(input())
+# infos = [input().split() for _ in range(n)]
 
 
 # 获取猜的数字guess在指定谜底answer下的猜测提示
@@ -8,6 +8,7 @@ def getGuessResult(guess, answer):
     countA = 0
     countB = 0
 
+    # 判断不同
     answer_arr = [0] * 10
     guess_arr = [0] * 10
 
@@ -22,6 +23,7 @@ def getGuessResult(guess, answer):
             answer_arr[c2] += 1
 
     for i in range(10):
+        # 最小值才是要统计的
         countB += min(answer_arr[i], guess_arr[i])
 
     return f"{countA}A{countB}B"
@@ -88,5 +90,74 @@ def getResult():
         return cache[0]
 
 
+def my_count_diff(num1,nums2):
+    s1 = str(num1)
+    s2 = str(num2)
+    
+    cnt1 = [0] * 10
+    cnt2 = [0] * 10
+
+
+    for i in range(len(s1)):
+        c1 = int(s1[i])
+        c2 = int(s2[i])
+
+        if c1 != c2:
+            cnt1[c1] += 1
+            cnt2[c2] += 1
+    
+    ans = 0
+    for i in range(10):
+        ans += min(cnt1[i],cnt2[i])
+    return ans
+            
+
+
+
+def count_different_positions(num1, num2):
+
+    # 将数字转为字符串
+    str1 = str(num1)
+    str2 = str(num2)
+    
+    # 初始化计数器
+    count = 0
+    
+    # 创建数字频率字典
+    freq1 = {}
+    freq2 = {}
+    
+    # 记录每个数字的出现频率
+    for digit in str1:
+        if digit in freq1:
+            freq1[digit] += 1
+        else:
+            freq1[digit] = 1
+            
+    for digit in str2:
+        if digit in freq2:
+            freq2[digit] += 1
+        else:
+            freq2[digit] = 1
+            
+    # 计算相同数字但位置不同的数量
+    for digit in freq1:
+        if digit in freq2:
+            count += min(freq1[digit], freq2[digit])
+    
+    # 计算相同数字在同一位置的数量
+    same_position = sum(1 for i in range(4) if str1[i] == str2[i])
+    
+    # 返回相同数字但位置不同的数量
+    return count - same_position
+
+# 示例
+num1 = 1234
+num2 = 2413
+result = my_count_diff(num1, num2)
+print(result)  # 输出 4，因为 1, 2, 3, 4 都相同，但位置不同
+
+
+
 # 算法调用
-print(getResult())
+# print(getResult())
