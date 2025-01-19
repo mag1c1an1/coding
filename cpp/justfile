@@ -1,0 +1,2 @@
+r:
+  xmake build && xmake r < input.txt
