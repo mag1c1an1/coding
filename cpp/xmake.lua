@@ -10,6 +10,10 @@ target("cpp")
     add_files("src/main.cpp")
     add_packages("fmt")
 
+target("niuma")
+    set_kind("binary")
+    add_files("src/niuma.cpp")
+
 --
 -- If you want to known more usage about xmake, please see https://xmake.io
 --
